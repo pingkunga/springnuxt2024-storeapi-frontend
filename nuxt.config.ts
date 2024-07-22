@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   ssr: true,
-  // Hybrid Rendering Mode
+  // Hybrid Rendering Mode In NuXT
   routeRules: {
     '/backend/**': {ssr: false}
   },
