@@ -21,9 +21,18 @@
                 
                 <VRow no-gutters align="center" justify="center">
                     <VCol cols="12" md="6" class="pa-3">
-                        <h1>Login</h1>
-                        <p class="text-medium-emphasis">Input your email and password</p>
+                        <h1>Register</h1>
                         <VForm class="mt-7">
+                            <div class="mt-1">
+                                <VTextField 
+                                    label="Username" 
+                                    variant="outlined"
+                                    prepend-inner-icon="mdi-account"
+                                    id="username"
+                                    name="username"
+                                    type="username"
+                                />
+                            </div>
                             <div class="mt-1">
                                 <VTextField 
                                     label="Email" 
@@ -44,19 +53,29 @@
                                     type="password"
                                 />
                             </div>
+                            <div class="mt-1">
+                                <VTextField 
+                                    label="Confirm Password" 
+                                    variant="outlined"
+                                    prepend-inner-icon="mdi-lock"
+                                    id="confirmpassword"
+                                    name="confirmpassword"
+                                    type="confirmpassword"
+                                />
+                            </div>
                             <div class="mt-5 text-center">
                                 <VBtn type="submit" 
                                     block
                                     min-height="44" 
                                     class="gradient primary"
                                     >
-                                    Login
+                                    Register
                                 </VBtn>
                             </div>
                         </VForm>
                         <p class="text-center mt-10">
-                            <span>Don't have an account? Registe</span>&nbsp;
-                            <NuxtLink to="/register" class="text-primary">Register</NuxtLink>
+                            <span>Have an account? Login</span>&nbsp;
+                            <NuxtLink to="/" class="text-primary">Login</NuxtLink>
                         </p>
                     </VCol>
                 </VRow>

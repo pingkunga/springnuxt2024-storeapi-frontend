@@ -1,8 +1,8 @@
 <template>
     <VApp>
-        <VAppBar app>
+        <!-- <VAppBar app>
             <VToolbarTitle>My Nuxt App</VToolbarTitle>
-        </VAppBar>
+        </VAppBar> -->
         <VMain>
             <slot />
         </VMain>
