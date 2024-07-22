@@ -75,10 +75,14 @@ bun run preview
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
 
-npm install vuetify vite-plugin-vuetify sass
+npm i -D vuetify vite-plugin-vuetify sass
 
-npm install -d nuxt-icon
+npm i -D @nuxt/icon
 
-npm install -d @nuxtjs/google-fonts
+npm i -D @nuxtjs/google-fonts
 
-npm install -d @nuxtjs/robots
+npm i -D @nuxtjs/robots
+
+npm i -D @mdi/font
+
+plugin colorhight
