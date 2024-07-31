@@ -3,13 +3,58 @@
 
     const { ruleRequired, rulePassLen } = useFormRules()
 
+    const { $swal } : any = useNuxtApp()
+
     const username = ref('')
     const password = ref('')
 
     const submitForm = () => {
         if (ruleRequired(username.value) == true && ruleRequired(username.value) == true && rulePassLen(password.value) == true) {
-            console.log(username.value)
-            console.log(password.value)
+            //console.log(username.value)
+            //console.log(password.value)
+
+            // Call the login API
+            const config =  useRuntimeConfig()
+            const api = config.public.url
+            const image = config.public.urlimage
+            
+            console.log(api)
+            console.log(image)
+
+            useFetch(`${api}/api/authenticate/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username.value,
+                    password: password.value
+                }),
+
+                onResponse({ request, response, options }) {
+                    console.log(response)
+                    console.log("-")
+                    console.log(request)
+
+                    if(response.status == 401){
+                        console.log('Username or Password is incorrect')
+                        $swal({
+                            title: 'Error',
+                            text: 'Username or Password is incorrect',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    } else{
+                        console.log('Login Success')
+                        $swal({
+                            title: 'Success',
+                            text: 'Login Success',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                }
+            })
         }
     }
 
