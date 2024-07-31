@@ -1,4 +1,29 @@
 <script setup lang="ts">
+    import { useFormRules } from '~/composables/useFormRules';
+
+    const { ruleRequired, rulePassLen , ruleEmail} = useFormRules()
+
+    const username = ref('')
+    const email = ref('')
+    const password = ref('')
+    const confirmpassword = ref('')
+
+    const submitForm = () => {
+    if (ruleRequired(username.value) == true 
+     && ruleEmail(email.value) == true
+     && ruleRequired(email.value) == true
+     && ruleRequired(username.value) == true 
+     && rulePassLen(password.value) == true) 
+     {
+        if(password.value != confirmpassword.value){
+            console.log('Password does not match')
+            return
+        }
+        console.log(username.value)
+        console.log(email.value)
+        console.log(password.value)
+    }
+}
 
 </script>
 
@@ -22,9 +47,11 @@
                 <VRow no-gutters align="center" justify="center">
                     <VCol cols="12" md="6" class="pa-3">
                         <h1>Register</h1>
-                        <VForm class="mt-7">
+                        <VForm class="mt-7" @submit.prevent="submitForm" >
                             <div class="mt-1">
                                 <VTextField 
+                                    v-model="username"
+                                    :rules="[ruleRequired]"
                                     label="Username" 
                                     variant="outlined"
                                     prepend-inner-icon="mdi-account"
@@ -35,6 +62,8 @@
                             </div>
                             <div class="mt-1">
                                 <VTextField 
+                                    v-model="email"
+                                    :rules="[ruleRequired, ruleEmail]"
                                     label="Email" 
                                     variant="outlined"
                                     prepend-inner-icon="mdi-email"
@@ -45,6 +74,8 @@
                             </div>
                             <div class="mt-1">
                                 <VTextField 
+                                    v-model="password"
+                                    :rules="[ruleRequired, rulePassLen]"
                                     label="Password" 
                                     variant="outlined"
                                     prepend-inner-icon="mdi-lock"
@@ -55,12 +86,14 @@
                             </div>
                             <div class="mt-1">
                                 <VTextField 
+                                    v-model="confirmpassword"
+                                    :rules="[ruleRequired, rulePassLen]"
                                     label="Confirm Password" 
                                     variant="outlined"
                                     prepend-inner-icon="mdi-lock"
                                     id="confirmpassword"
                                     name="confirmpassword"
-                                    type="confirmpassword"
+                                    type="password"
                                 />
                             </div>
                             <div class="mt-5 text-center">
