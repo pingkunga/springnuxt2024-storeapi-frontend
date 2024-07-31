@@ -1,4 +1,17 @@
 <script setup lang="ts">
+    import { useFormRules } from '~/composables/useFormRules';
+
+    const { ruleRequired, rulePassLen } = useFormRules()
+
+    const username = ref('')
+    const password = ref('')
+
+    const submitForm = () => {
+        if (ruleRequired(username.value) == true && ruleRequired(username.value) == true && rulePassLen(password.value) == true) {
+            console.log(username.value)
+            console.log(password.value)
+        }
+    }
 
 </script>
 
@@ -23,19 +36,23 @@
                     <VCol cols="12" md="6" class="pa-3">
                         <h1>Login</h1>
                         <p class="text-medium-emphasis">Input your email and password</p>
-                        <VForm class="mt-7">
+                        <VForm class="mt-7" @submit.prevent="submitForm" >
                             <div class="mt-1">
                                 <VTextField 
-                                    label="Email" 
+                                    v-model="username"
+                                    :rules="[ruleRequired]"
+                                    label="Username" 
                                     variant="outlined"
-                                    prepend-inner-icon="mdi-email"
-                                    id="email"
-                                    name="email"
-                                    type="email"
+                                    prepend-inner-icon="mdi-account"
+                                    id="username"
+                                    name="username"
+                                    type="text"
                                 />
                             </div>
                             <div class="mt-1">
                                 <VTextField 
+                                    v-model="password"
+                                    :rules="[ruleRequired, rulePassLen]"
                                     label="Password" 
                                     variant="outlined"
                                     prepend-inner-icon="mdi-lock"
