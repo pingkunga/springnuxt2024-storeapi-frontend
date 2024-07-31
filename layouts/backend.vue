@@ -2,7 +2,8 @@
 
     import Sidebar from '~/components/backendComponents/sidebar/Sidebar.vue'
     import Header from '@/components/backendComponents/header/Header.vue'
-    import { useDisplay, useTheme, type ThemeInstance } from 'vuetify'
+    import { useDisplay, type ThemeInstance } from 'vuetify'
+    import { useTheme } from '~/composables/useTheme';
 
     //mdAndUp > Full Screen
     //mdAndDown > Mobile Screen
@@ -10,6 +11,7 @@
     const { mdAndUp, mdAndDown } = useDisplay()
     const drawer = ref(undefined || true)
 
+    /*
     const theme: ThemeInstance = useTheme()
 
     // Toggle Theme
@@ -20,6 +22,10 @@
     }
 
     console.log(theme.global.name.value)
+    */
+
+    const { theme, toggleTheme } = useTheme()
+
 </script>
 
 <template>
