@@ -88,3 +88,5 @@ npm i -D @mdi/font
 npm i -D apexcharts vue3-apexcharts
 
 plugin colorhight
+
+npm install sweetalert2 -D
