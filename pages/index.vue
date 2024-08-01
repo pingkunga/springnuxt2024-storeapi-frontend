@@ -12,6 +12,8 @@
         }
     )
 
+    const router = useRouter()
+
     const username = ref('')
     const password = ref('')
 
@@ -60,6 +62,8 @@
                             confirmButtonText: 'OK'
                         })
                         console.log('Login Success')
+
+                        router.push('/backend/dashboard')
                     }
                 }
             })
