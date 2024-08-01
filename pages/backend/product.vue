@@ -1,4 +1,12 @@
 <script setup lang="ts">
+    import useBackendAPI from '@/composables/useBackendAPI';
+
+
+    //test api
+    const { data: products } = await useBackendAPI().getAllProducts(1,100)
+    
+    console.log(products)
+
     definePageMeta({
         layout: "backend",
     })
