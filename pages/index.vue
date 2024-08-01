@@ -5,6 +5,13 @@
 
     const { $swal } : any = useNuxtApp()
 
+    const token = useCookie(
+        'token',
+        {
+            maxAge: 60 * 60,    //1 hour
+        }
+    )
+
     const username = ref('')
     const password = ref('')
 
@@ -32,7 +39,7 @@
                 }),
 
                 onResponse({ request, response, options }) {
-                    //console.log(response)
+                    console.log(response)
                     //console.log("-")
                     //console.log(request)
 
@@ -45,6 +52,7 @@
                         })
                         console.log('Username or Password is incorrect')
                     } else{
+                        token.value = response._data.data.token
                         $swal.fire({
                             title: 'Success',
                             text: 'Login Success',
