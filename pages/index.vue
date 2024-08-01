@@ -70,6 +70,17 @@
         }
     }
 
+
+    useHead({
+        title: 'Login',
+        meta: [
+            {
+                hid: 'description',
+                name: 'description',
+                content: 'Login Page'
+            }
+        ]
+    })
 </script>
 
 <template>
