@@ -21,7 +21,7 @@
             console.log(api)
             console.log(image)
 
-            useFetch(`${api}/api/authenticate/login`, {
+            $fetch(`${api}/authenticate/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,26 +32,26 @@
                 }),
 
                 onResponse({ request, response, options }) {
-                    console.log(response)
-                    console.log("-")
-                    console.log(request)
+                    //console.log(response)
+                    //console.log("-")
+                    //console.log(request)
 
                     if(response.status == 401){
-                        console.log('Username or Password is incorrect')
-                        $swal({
+                        $swal.fire({
                             title: 'Error',
                             text: 'Username or Password is incorrect',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         })
+                        console.log('Username or Password is incorrect')
                     } else{
-                        console.log('Login Success')
-                        $swal({
+                        $swal.fire({
                             title: 'Success',
                             text: 'Login Success',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         })
+                        console.log('Login Success')
                     }
                 }
             })
