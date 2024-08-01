@@ -18,6 +18,7 @@
   //Tell Vue to use layout in layouts/backend.vue
   definePageMeta({
     layout: "backend",
+    middleware: ["auth"]
   })
 
   useHead({
