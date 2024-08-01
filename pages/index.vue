@@ -12,6 +12,13 @@
         }
     )
 
+    const userData = useCookie(
+        'userData',
+        {
+            maxAge: 60 * 60,    //1 hour
+        }
+    )
+
     const router = useRouter()
 
     const username = ref('')
@@ -55,6 +62,7 @@
                         console.log('Username or Password is incorrect')
                     } else{
                         token.value = response._data.data.token
+                        userData.value = response._data.data
                         $swal.fire({
                             title: 'Success',
                             text: 'Login Success',
