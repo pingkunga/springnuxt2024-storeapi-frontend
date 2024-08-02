@@ -71,7 +71,11 @@
                         })
                         console.log('Login Success')
 
-                        router.push('/backend/dashboard')
+                        //Deplay 1 Second
+                        setTimeout(() => {
+                            $swal.close()
+                            router.push('/backend/dashboard')
+                        }, 2000)
                     }
                 }
             })
