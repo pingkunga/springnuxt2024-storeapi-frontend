@@ -8,9 +8,9 @@
 
     //==========================================================
     //Pagination
-    const page = ref(1) 
-    const rowsPerPage = ref(2) 
-    const totalItems = ref(0) 
+    const page = ref(1)
+    const rowsPerPage = ref(2)
+    const totalItems = ref(0)
     //Pagination
     //Search
     const searchQuery = ref('')
@@ -29,11 +29,11 @@
 
     //==========================================================
     //Lookup
-    const categories: Ref<Category[]> = ref([])
+    //const categoryList: Ref<Category[]> = ref([])
     const fetchCategories = async () => {
         const { data } = await useBackendAPI().getAllCategories()
-        categories.value = data?.value ?? []
-        console.log(categories?.value)
+        categoryList.value = data?.value ?? []
+        console.log(categoryList?.value)
     }
 
     //==========================================================
@@ -44,7 +44,7 @@
     })
 
     //==========================================================
-    //BEGIN: Detail for Add / Edit / View  
+    //BEGIN: Detail for Add / Edit / View
     // Form data ------------------------------------------
     const productName = ref('')
     const unitPrice  = ref(0)
@@ -122,9 +122,38 @@
         (v: string) => !!v || "Category is required",
     ])
 
+    const isFormValid = () => {
+      return productName.value && unitPrice.value && unitInStock.value && category.value && image.value;
+    };
+
     // ----------------- Form Validation ----------------
     const formAddSubmit = async () => {
 
+        if (!isFormValid()) {
+            return
+        }
+
+        const formData = new FormData()
+        formData.append('productName', productName.value)
+        formData.append('unitPrice', unitPrice.value.toString())
+        formData.append('unitInStock', unitInStock.value.toString())
+        formData.append('categoryId ', category.value)
+
+        if (image.value){
+            formData.append('image', image.value as Blob)
+        }
+
+        //debug formData
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]);
+        }
+        /*
+        const { data } = await useBackendAPI().addProduct(formData)
+        if (data.value) {
+            fetchProducts()
+            close()
+        }
+            */
     }
 
     const formEditSubmit = async () => {
@@ -135,7 +164,7 @@
     definePageMeta({
         layout: "backend",
     })
-    
+
     useHead({
         title: 'Product',
         meta: [
@@ -174,7 +203,7 @@
                             label="Product Name"
                             hide-details="auto"
                             variant="outlined"
-                        ></v-text-field> 
+                        ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="12">
                         <v-text-field
@@ -213,7 +242,7 @@
                     </v-col>
 
                     <v-col cols="12" sm="6">
-                    
+
                         <v-col cols="12" sm="12">
                         <!-- Preview Image -->
                         <v-img v-if="imageUrl" :src="imageUrl" class="img-prview">
@@ -237,7 +266,7 @@
                     </v-col>
 
                     </v-row>
-                    
+
                     <v-row justify="center">
                         <!-- Button Submit -->
                         <v-card-actions class="pl-3">
@@ -248,7 +277,7 @@
                             type="submit"
                             >Submit</v-btn
                         >
-                        <v-btn color="error" size="large" @click="close">Cancel</v-btn> 
+                        <v-btn color="error" size="large" @click="close">Cancel</v-btn>
                         </v-card-actions>
                     </v-row>
 
@@ -298,7 +327,7 @@
                         prev-icon="mdi-chevron-left"
                         @next="fetchProducts"
                         @prev="fetchProducts"
-                        @update:model-value="fetchProducts" 
+                        @update:model-value="fetchProducts"
                     ></v-pagination>
                     <!-- @update:model-value กรณีที่กดเลขหน้าตรงๆ -->
 
