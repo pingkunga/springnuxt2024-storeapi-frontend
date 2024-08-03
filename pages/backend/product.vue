@@ -7,19 +7,19 @@
     //==========================================================
     //Pagination
     const page = ref(1) 
-    const rowsPerPage = ref(5) 
+    const rowsPerPage = ref(2) 
     const totalItems = ref(0) 
     //Pagination
     //==========================================================
 
     const products: any = ref([])
     const fetchProducts = async () => {
-        const { data } = await useBackendAPI().getAllProducts(1,100)
+        const { data } = await useBackendAPI().getAllProducts(page.value,rowsPerPage.value)
         //console.log(data.value.products)
         //console.log(totalItems)
         products.value = data.value.products
         totalItems.value = data.value.totalItems
-        //console.log(products)
+        console.log(data.value.products)
         //console.log(totalItems)
     }
 
@@ -59,7 +59,17 @@
                             <h2>Product ({{totalItems}})</h2>
                         </v-col>
                     </v-row>
-                    
+                    <v-pagination
+                        v-model="page"
+                        :length="Math.ceil(totalItems / rowsPerPage)"
+                        next-icon="mdi-chevron-right"
+                        prev-icon="mdi-chevron-left"
+                        @next="fetchProducts"
+                        @prev="fetchProducts"
+                        @update:model-value="fetchProducts" 
+                    ></v-pagination>
+                    <!-- @update:model-value กรณีที่กดเลขหน้าตรงๆ -->
+
                     <v-table class="mt-5">
                         <thead>
                             <tr>
