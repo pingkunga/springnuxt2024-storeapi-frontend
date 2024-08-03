@@ -14,15 +14,17 @@ export default() => {
     }
  
     const fetchWithTokenCheck = async(url: any, options: object) => {
-        const response = await $fetch(url, options)
-        console.log(response)
-        if (response?.error) {
-            if(response?.error.value && (response?.error.value.statusCode === 403 || response?.error.value.statusCode === 401)) {
+        //https://stackoverflow.com/questions/76839341/which-to-use-fetch-useasyncdata-or-usefetch-for-get-and-post-requests-in-nuxt
+        const response = await useFetch(url, options)
+        //console.log(response)
+        //console.log(response.error.value)
+        if(response?.error.value){
+            if(response?.error.value.statusCode === 403 || response?.error.value.statusCode === 401) {
                 //Token expired redirect to login
                 router.push('/')
             }
             else {
-               console.log(response?.error.value)
+                console.log(response?.error.value)
             }
         }
 

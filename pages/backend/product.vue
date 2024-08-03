@@ -4,13 +4,23 @@
     const config = useRuntimeConfig()
     const IMAGE_PATH = config.public.urlimage
 
+    //==========================================================
+    //Pagination
+    const page = ref(1) 
+    const rowsPerPage = ref(5) 
+    const totalItems = ref(0) 
+    //Pagination
+    //==========================================================
+
     const products: any = ref([])
     const fetchProducts = async () => {
         const { data } = await useBackendAPI().getAllProducts(1,100)
-        //console.log(data)
-        products.value = data
-
-        console.log(products)
+        //console.log(data.value.products)
+        //console.log(totalItems)
+        products.value = data.value.products
+        totalItems.value = data.value.totalItems
+        //console.log(products)
+        //console.log(totalItems)
     }
 
     //First time call
@@ -46,7 +56,7 @@
                 <v-card-text class="pa-5">
                     <v-row>
                         <v-col cols="12" lg="3" md="3">
-                            <h2>Product (10)</h2>
+                            <h2>Product ({{totalItems}})</h2>
                         </v-col>
                     </v-row>
                     
