@@ -1,3 +1,4 @@
+import type { CategoryList } from '~/types/category'
 import type { ProductList, Product} from '~/types/product'
 
 export default() => {
@@ -43,8 +44,20 @@ export default() => {
             }
         )
     }
+
+    const getAllCategories = async() => {
+        return fetchWithTokenCheck<CategoryList>(
+            `${api}/categories`,
+            {
+                method: 'GET',
+                headers: headers,
+                cache: 'no-cache'
+            }
+        )
+    }
     
     return {
-        getAllProducts
+        getAllProducts,
+        getAllCategories
     }
 }
