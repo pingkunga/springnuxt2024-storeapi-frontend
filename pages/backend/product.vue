@@ -19,9 +19,9 @@
         const { data } = await useBackendAPI().getAllProducts(page.value,rowsPerPage.value, searchQuery.value)
         //console.log(data.value.products)
         //console.log(totalItems)
-        products.value = data.value.products
-        totalItems.value = data.value.totalItems
-        console.log(data.value.products)
+        products.value = data.value?.products
+        totalItems.value = data.value?.totalItems ?? 0
+        console.log(data.value?.products)
         //console.log(totalItems)
     }
 

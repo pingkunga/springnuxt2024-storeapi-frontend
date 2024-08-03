@@ -1,3 +1,5 @@
+import type { ProductList, Product} from '~/types/product'
+
 export default() => {
 
     const router = useRouter()
@@ -13,9 +15,9 @@ export default() => {
          'Authorization': `Bearer ${token.value}`
     }
  
-    const fetchWithTokenCheck = async(url: any, options: object) => {
+    const fetchWithTokenCheck = async<T>(url: string, options: object) => {
         //https://stackoverflow.com/questions/76839341/which-to-use-fetch-useasyncdata-or-usefetch-for-get-and-post-requests-in-nuxt
-        const response = await useFetch(url, options)
+        const response = await useFetch<T>(url, options)
         //console.log(response)
         //console.log(response.error.value)
         if(response?.error.value){
@@ -32,7 +34,7 @@ export default() => {
     }
 
     const getAllProducts = async(page: number, limit: number, searchQuery: string) => {
-        return fetchWithTokenCheck(
+        return fetchWithTokenCheck<ProductList>(
             `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
             {
                 method: 'GET',
