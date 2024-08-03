@@ -1,5 +1,7 @@
 <script setup lang="ts">
     import useBackendAPI from '@/composables/useBackendAPI';
+    import type { Category } from '~/types/category';
+    import type { Product, ProductList } from '~/types/product';
 
     const config = useRuntimeConfig()
     const IMAGE_PATH = config.public.urlimage
@@ -14,24 +16,122 @@
     const searchQuery = ref('')
     //==========================================================
 
-    const products: any = ref([])
+    const products: Ref<Product[]> = ref([])
     const fetchProducts = async () => {
         const { data } = await useBackendAPI().getAllProducts(page.value,rowsPerPage.value, searchQuery.value)
         //console.log(data.value.products)
         //console.log(totalItems)
-        products.value = data.value?.products
+        products.value = data.value?.products ?? []
         totalItems.value = data.value?.totalItems ?? 0
-        console.log(data.value?.products)
+        //console.log(data.value?.products)
         //console.log(totalItems)
     }
 
+    //==========================================================
+    //Lookup
+    const categories: Ref<Category[]> = ref([])
+    const fetchCategories = async () => {
+        const { data } = await useBackendAPI().getAllCategories()
+        categories.value = data?.value ?? []
+        console.log(categories?.value)
+    }
+
+    //==========================================================
     //First time call
     onMounted(() => {
         fetchProducts()
+        fetchCategories()
     })
 
-    //console.log(products)
+    //==========================================================
+    //BEGIN: Detail for Add / Edit / View  
+    // Form data ------------------------------------------
+    const productName = ref('')
+    const unitPrice  = ref(0)
+    const unitInStock = ref(0)
+    const image = ref<File | null>(null)
+    const category = ref('')
+    const categoryList = ref([] as Category[])
 
+    // ----------------- Dialog ---------------------------
+    const dialog = ref(false)
+    const deletedialog = ref(false)
+    const search = ref("");
+    const editedIndex = ref(-1)
+    const deleteIndex = ref(-1)
+
+    // Close Dialog
+    function close() {
+        dialog.value = false
+        deletedialog.value = false
+        setTimeout(() => {
+        }, 300)
+    }
+
+    //Computed Property
+    const formTitle = computed(() => {
+        return editedIndex.value === -1 ? "Add New Product" : "Edit Product"
+    })
+
+    // Reset Form
+    const resetForm = () => {
+        productName.value = ''
+        image.value = null
+        files.value = []
+        unitPrice.value = 0
+        unitInStock.value = 0
+        category.value = ''
+        imageUrl.value = null
+    }
+
+    // for image preview =================
+    const files = ref([])
+    const imageUrl = ref<string | null>(null)
+
+    // handle image change
+    const handleFileChange = async (e: Event) => {
+        const file = (e.target as HTMLInputElement).files?.[0]
+        const reader = new FileReader()
+        reader.onload = (e) => {
+        imageUrl.value = e.target?.result as string
+        }
+        reader.readAsDataURL(file!)
+        image.value = files.value[0]
+    }
+
+    // remove image
+    const removeImage = () => {
+        imageUrl.value = null
+    }
+
+    // ----------------- Form Validation ----------------
+    const nameRules = [
+        (v: string) => !!v || "Product name is required",
+        (v: string) => (v && v.length >= 5) || "Product name be at least 5 characters",
+    ]
+
+    const priceRules = ref([
+        (v: string) => !!v || "Price is required",
+    ])
+
+    const qtyRules = ref([
+        (v: string) => !!v || "Unit in stock is required",
+    ])
+
+    const categoryRules = ref([
+        (v: string) => !!v || "Category is required",
+    ])
+
+    // ----------------- Form Validation ----------------
+    const formAddSubmit = async () => {
+
+    }
+
+    const formEditSubmit = async () => {
+
+    }
+    //END: Detail for Add / Edit / View
+    //==========================================================
     definePageMeta({
         layout: "backend",
     })
@@ -51,6 +151,116 @@
     <div>
         <h1>Product Page</h1>
     </div>
+
+    <!-- ====================================== -->
+    <!-- Add / Edit Product Dialog -->
+    <v-dialog v-model="dialog" width="800">
+        <v-card>
+
+            <v-card-title class="pa-4 bg-secondary">
+                <span class="title text-white">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+                <v-container>
+                <v-form fast-fail ref="form" @submit.prevent="editedIndex === -1 ? formAddSubmit(): formEditSubmit()">
+                    <v-row>
+
+                    <v-col cols="12" sm="6">
+                        <v-col cols="12" sm="12">
+                        <v-text-field
+                            v-model="productName"
+                            :rules="nameRules"
+                            label="Product Name"
+                            hide-details="auto"
+                            variant="outlined"
+                        ></v-text-field> 
+                        </v-col>
+                        <v-col cols="12" sm="12">
+                        <v-text-field
+                            v-model="unitPrice"
+                            :rules="priceRules"
+                            label="Price"
+                            hide-details="auto"
+                            variant="outlined"
+                            type="number"
+                        ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="12">
+                        <v-text-field
+                            v-model="unitInStock"
+                            :rules="qtyRules"
+                            label="Unit in Stock"
+                            hide-details="auto"
+                            variant="outlined"
+                            type="number"
+                        ></v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="12">
+                        <v-select
+                            v-model="category"
+                            :rules="categoryRules"
+                            :items="categoryList"
+                            item-title="categoryName"
+                            item-value="id"
+                            label="Category"
+                            hide-details="auto"
+                            variant="outlined"
+                        ></v-select>
+                        </v-col>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                    
+                        <v-col cols="12" sm="12">
+                        <!-- Preview Image -->
+                        <v-img v-if="imageUrl" :src="imageUrl" class="img-prview">
+                            <v-btn icon @click="removeImage">
+                            <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                        </v-img>
+
+                        <!-- Image Inputs -->
+                        <v-file-input
+                            @change="handleFileChange"
+                            v-model="files"
+                            label="Image"
+                            hide-details="auto"
+                            outlined
+                            dense
+                            prepend-icon="mdi-image"
+                            accept="image/*"
+                        ></v-file-input>
+                        </v-col>
+                    </v-col>
+
+                    </v-row>
+                    
+                    <v-row justify="center">
+                        <!-- Button Submit -->
+                        <v-card-actions class="pl-3">
+                        <v-btn
+                            color="secondary"
+                            size="large"
+                            variant="elevated"
+                            type="submit"
+                            >Submit</v-btn
+                        >
+                        <v-btn color="error" size="large" @click="close">Cancel</v-btn> 
+                        </v-card-actions>
+                    </v-row>
+
+                </v-form>
+                </v-container>
+            </v-card-text>
+
+        </v-card>
+    </v-dialog>
+    <!-- Add / Edit Product Dialog -->
+    <!-- ====================================== -->
+
 
     <v-row>
         <v-col cols="12" sm="12">
@@ -72,7 +282,12 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" lg="3" md="3" class="text-right">
-                            <v-btn color="primary">Add Product</v-btn>
+                            <v-btn color="primary"
+                                class="m1-auto"
+                                variant="elevated"
+                                @click="dialog=true;editedIndex=-1;resetForm();"
+                            >
+                            Add Product</v-btn>
                         </v-col>
                     </v-row>
 
