@@ -10,11 +10,13 @@
     const rowsPerPage = ref(2) 
     const totalItems = ref(0) 
     //Pagination
+    //Search
+    const searchQuery = ref('')
     //==========================================================
 
     const products: any = ref([])
     const fetchProducts = async () => {
-        const { data } = await useBackendAPI().getAllProducts(page.value,rowsPerPage.value)
+        const { data } = await useBackendAPI().getAllProducts(page.value,rowsPerPage.value, searchQuery.value)
         //console.log(data.value.products)
         //console.log(totalItems)
         products.value = data.value.products
@@ -58,7 +60,22 @@
                         <v-col cols="12" lg="3" md="3">
                             <h2>Product ({{totalItems}})</h2>
                         </v-col>
+                        <v-col cols="12" lg="6" md="6">
+                            <v-text-field
+                                v-model="searchQuery"
+                                density="compact"
+                                label="Search"
+                                append-icon="mdi-magnify"
+                                hide-details
+                                variant="outlined"
+                                @keyup.enter="fetchProducts"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" lg="3" md="3" class="text-right">
+                            <v-btn color="primary">Add Product</v-btn>
+                        </v-col>
                     </v-row>
+
                     <v-pagination
                         v-model="page"
                         :length="Math.ceil(totalItems / rowsPerPage)"

@@ -31,9 +31,9 @@ export default() => {
         return response
     }
 
-    const getAllProducts = async(page: number, limit: number) => {
+    const getAllProducts = async(page: number, limit: number, searchQuery: string) => {
         return fetchWithTokenCheck(
-            `${api}/products?page=${page}&limit=${limit}`,
+            `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
             {
                 method: 'GET',
                 headers: headers,
