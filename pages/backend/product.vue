@@ -44,7 +44,7 @@
     })
 
     //==========================================================
-    //BEGIN: Detail for Add / Edit / View
+    //BEGIN: Detail for Add / Edit+View / Delete
     // Form data ------------------------------------------
     const productName = ref('')
     const unitPrice  = ref(0)
@@ -230,7 +230,19 @@
             console.log(error)
         }
     }
-    //END: Detail for Add / Edit / View
+
+    const deleteProduct = async (id: number) => {
+        try {
+            const { data } = await useBackendAPI().deleteProduct(id)
+            console.log(data)
+            close()
+            fetchProducts()
+            deletedialog.value = false
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    //END: Detail for Add / Edit+View / Delete
     //==========================================================
     definePageMeta({
         layout: "backend",
@@ -359,6 +371,38 @@
         </v-card>
     </v-dialog>
     <!-- Add / Edit Product Dialog -->
+
+    <!-- Confirm Delete Dialog -->
+    <v-dialog
+        v-model="deletedialog"
+        width="auto"
+    >
+        <v-card>
+        <v-card-title class="text-h6 mx-3 mt-3">
+            Confirm delete product Id: {{ deleteIndex }} ?
+        </v-card-title>
+        <v-card-actions class="pb-4">
+            <v-spacer></v-spacer>
+            <v-btn
+            color="red-darken-1"
+            class="text-button"
+            variant="text"
+            @click="deleteProduct(deleteIndex)"
+            >
+            Delete
+            </v-btn>
+            <v-btn
+            color="grey-darken-1"
+            class="text-button"
+            variant="text"
+            @click="deletedialog=false"
+            >
+            Cancel
+            </v-btn>
+        </v-card-actions>
+        </v-card>
+    </v-dialog>
+    <!-- Confirm Delete Dialog -->
     <!-- ====================================== -->
 
 
@@ -454,7 +498,9 @@
                                     <v-icon
                                         small
                                         class="text-error cursor-pointer"
-                                        title="Delete">mdi-delete
+                                        title="Delete"
+                                        @click="deletedialog=true;deleteIndex=product.id"
+                                        >mdi-delete
                                     </v-icon>
                                 </td>
                             </tr>

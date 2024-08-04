@@ -21,7 +21,7 @@ export default() => {
         'Authorization': `Bearer ${token.value}`
     }
  
-    const fetchWithTokenCheck = async<T>(url: string, options: object) => {
+    const callWithTokenCheck = async<T>(url: string, options: object) => {
         //https://stackoverflow.com/questions/76839341/which-to-use-fetch-useasyncdata-or-usefetch-for-get-and-post-requests-in-nuxt
         const response = await useFetch<T>(url, options)
         //console.log(response)
@@ -48,7 +48,7 @@ export default() => {
         //         cache: 'no-cache'
         //     }
         // )
-        const res = await fetchWithTokenCheck<ProductList>(
+        const res = await callWithTokenCheck<ProductList>(
             `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
             {
                 method: 'GET',
@@ -68,7 +68,7 @@ export default() => {
     }
 
     const getProductById = async(id: number): Promise<Product> => {
-        const res = await fetchWithTokenCheck<Product>(
+        const res = await callWithTokenCheck<Product>(
             `${api}/products/${id}`,
             {
                 method: 'GET',
@@ -97,7 +97,7 @@ export default() => {
     }
 
     const addProduct = async(product: FormData) => {
-        return fetchWithTokenCheck<FormData>(
+        return callWithTokenCheck<FormData>(
             `${api}/products`,
             {
                 method: 'POST',
@@ -108,7 +108,7 @@ export default() => {
     }
 
     const updateProduct = async(id: number, product: FormData) => {
-        return fetchWithTokenCheck<FormData>(
+        return callWithTokenCheck<FormData>(
             `${api}/products/${id}`,
             {
                 method: 'PUT',
@@ -117,9 +117,20 @@ export default() => {
             }
         )
     }
+
+    const deleteProduct = async(id: number) => {
+        return callWithTokenCheck<FormData>(
+            `${api}/products/${id}`,
+            {
+                method: 'DELETE',
+                headers: headerFormData,
+                cache: 'no-cache'
+            }
+        )
+    }
     //===========================================================================================
     const getAllCategories = async() => {
-        return fetchWithTokenCheck<CategoryList>(
+        return callWithTokenCheck<CategoryList>(
             `${api}/categories`,
             {
                 method: 'GET',
@@ -134,6 +145,7 @@ export default() => {
         addProduct, 
         getProductById,
         updateProduct,
+        deleteProduct,
 
         getAllCategories
     }
