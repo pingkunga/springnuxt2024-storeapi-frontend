@@ -106,6 +106,17 @@ export default() => {
             }
         )
     }
+
+    const updateProduct = async(id: number, product: FormData) => {
+        return fetchWithTokenCheck<FormData>(
+            `${api}/products/${id}`,
+            {
+                method: 'PUT',
+                headers: headerFormData,
+                body: product
+            }
+        )
+    }
     //===========================================================================================
     const getAllCategories = async() => {
         return fetchWithTokenCheck<CategoryList>(
@@ -122,7 +133,8 @@ export default() => {
         getAllProducts,
         addProduct, 
         getProductById,
-        
+        updateProduct,
+
         getAllCategories
     }
 }

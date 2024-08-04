@@ -123,7 +123,7 @@
     ])
 
     const isFormValid = () => {
-      return productName.value && unitPrice.value && unitInStock.value && category.value && image.value;
+      return productName.value && unitPrice.value && unitInStock.value && category.value && imageUrl.value;
     };
 
     // ----------------- Form Validation ----------------
@@ -164,6 +164,25 @@
         
     }
 
+    const setFormToFormData = () => {
+        const formData = new FormData()
+        formData.append('productName', productName.value)
+        formData.append('unitPrice', unitPrice.value.toString())
+        formData.append('unitInStock', unitInStock.value.toString())
+        formData.append('categoryId ', category.value)
+
+        if (image.value){
+            formData.append('image', image.value as Blob)
+        }
+
+        //debug formData
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]);
+        }
+
+        return formData
+    }
+
 
     const formGetProcutById = async (id: number) => {
         const data: Product  = await useBackendAPI().getProductById(id)
@@ -187,6 +206,29 @@
 
     const formEditSubmit = async () => {
 
+        if (!isFormValid()) {
+            console.log(productName.value)
+            console.log(unitPrice.value)
+            console.log(unitInStock.value)
+            console.log(category.value)
+            console.log(image.value)
+
+            console.log('Form is not valid')
+            return
+        }
+
+        const formData = setFormToFormData()
+
+        try {
+            const { data } = await useBackendAPI().updateProduct(editedIndex.value, formData)
+            console.log(data)
+            fetchProducts()
+            resetForm()
+            close()
+
+        } catch (error) {
+            console.log(error)
+        }
     }
     //END: Detail for Add / Edit / View
     //==========================================================
