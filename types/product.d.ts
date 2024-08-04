@@ -8,6 +8,8 @@ export interface Product {
     categoryName: string
     createdDate: string // ISO date string
     modifiedDate: string | null // ISO date string or null
+
+    productImgBlob: string //base64
 }
   
 export interface ProductList {

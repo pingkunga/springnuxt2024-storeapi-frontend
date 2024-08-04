@@ -23,7 +23,7 @@
         //console.log(totalItems)
         products.value = data.value?.products ?? []
         totalItems.value = data.value?.totalItems ?? 0
-        //console.log(data.value?.products)
+        console.log(data.value?.products)
         //console.log(totalItems)
     }
 
@@ -147,13 +147,21 @@
         for (var pair of formData.entries()) {
             console.log(pair[0]+ ', ' + pair[1]);
         }
-        /*
-        const { data } = await useBackendAPI().addProduct(formData)
-        if (data.value) {
+
+        try {
+            const { data } = await useBackendAPI().addProduct(formData)
+            console.log(data)
             fetchProducts()
+            resetForm()
             close()
+
+            fetchProducts()
+
+        } catch (error) {
+            console.log(error)
         }
-            */
+       
+        
     }
 
     const formEditSubmit = async () => {
@@ -349,8 +357,13 @@
                                 <td>
                                     <div class="d-flex align-center py-4">
                                         <div v-if="product.productPicture">
-                                            <v-img
+                                            <!-- <v-img
                                                 :src="`${IMAGE_PATH}/${product.productPicture}`"
+                                                width="80px"
+                                                class="img-fluid"
+                                            ></v-img> -->
+                                            <v-img
+                                                :src="product.productImgBlob"
                                                 width="80px"
                                                 class="img-fluid"
                                             ></v-img>

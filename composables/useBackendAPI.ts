@@ -7,6 +7,7 @@ export default() => {
 
     const config = useRuntimeConfig()
     const api = config.public.url
+    const imagePath = config.public.urlimage
 
     const token = useCookie('token')
 
@@ -14,6 +15,10 @@ export default() => {
          'Accept': 'application/json',
          'Content-Type': 'application/json',
          'Authorization': `Bearer ${token.value}`
+    }
+
+    const headerFormData = {
+        'Authorization': `Bearer ${token.value}`
     }
  
     const fetchWithTokenCheck = async<T>(url: string, options: object) => {
@@ -35,7 +40,15 @@ export default() => {
     }
 
     const getAllProducts = async(page: number, limit: number, searchQuery: string) => {
-        return fetchWithTokenCheck<ProductList>(
+        // return fetchWithTokenCheck<ProductList>(
+        //     `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
+        //     {
+        //         method: 'GET',
+        //         headers: headers,
+        //         cache: 'no-cache'
+        //     }
+        // )
+        const res = await fetchWithTokenCheck<ProductList>(
             `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
             {
                 method: 'GET',
@@ -43,8 +56,39 @@ export default() => {
                 cache: 'no-cache'
             }
         )
+        
+        console.log(res)
+        
+        if (res.data.value?.products) {
+            for (let i = 0; i < res.data.value.products.length; i++) {
+                await getProductImage(res.data.value.products[i])
+            }
+        }
+        return res
     }
 
+    //:src="`${imagePath}/${product.productPicture}`"
+    const getProductImage = async(product: Product) => {
+        const response = await fetch(`${imagePath}/${product.productPicture}`, {
+            headers: {
+               'Authorization': `Bearer ${token.value}`
+            },
+        });
+        const blob = await response.blob();
+        product.productImgBlob = URL.createObjectURL(blob);
+    }
+
+    const addProduct = async(product: FormData) => {
+        return fetchWithTokenCheck<FormData>(
+            `${api}/products`,
+            {
+                method: 'POST',
+                headers: headerFormData,
+                body: product
+            }
+        )
+    }
+    //===========================================================================================
     const getAllCategories = async() => {
         return fetchWithTokenCheck<CategoryList>(
             `${api}/categories`,
@@ -58,6 +102,8 @@ export default() => {
     
     return {
         getAllProducts,
+        addProduct, 
+        
         getAllCategories
     }
 }
