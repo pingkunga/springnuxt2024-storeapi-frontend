@@ -67,6 +67,24 @@ export default() => {
         return res
     }
 
+    const getProductById = async(id: number): Promise<Product> => {
+        const res = await fetchWithTokenCheck<Product>(
+            `${api}/products/${id}`,
+            {
+                method: 'GET',
+                headers: headers,
+                cache: 'no-cache'
+            }
+        )
+
+        if (res.data.value) {
+            await getProductImage(res.data.value)
+            return res.data.value
+        }
+
+        throw new Error('Product not found')
+    }
+
     //:src="`${imagePath}/${product.productPicture}`"
     const getProductImage = async(product: Product) => {
         const response = await fetch(`${imagePath}/${product.productPicture}`, {
@@ -103,6 +121,7 @@ export default() => {
     return {
         getAllProducts,
         addProduct, 
+        getProductById,
         
         getAllCategories
     }

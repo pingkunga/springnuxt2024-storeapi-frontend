@@ -50,7 +50,7 @@
     const unitPrice  = ref(0)
     const unitInStock = ref(0)
     const image = ref<File | null>(null)
-    const category = ref('')
+    const category = ref()
     const categoryList = ref([] as Category[])
 
     // ----------------- Dialog ---------------------------
@@ -162,6 +162,27 @@
         }
        
         
+    }
+
+
+    const formGetProcutById = async (id: number) => {
+        const data: Product  = await useBackendAPI().getProductById(id)
+
+        // set form data
+        productName.value =data?.productName
+        unitPrice.value = data?.unitPrice
+        unitInStock.value = data?.unitInStock
+        category.value = data?.categoryId 
+
+        // check if product has image
+        if (data?.productPicture) {
+            imageUrl.value = data?.productImgBlob
+        } else {
+            imageUrl.value = null
+        }
+
+        // Set the edited index and open the dialog
+        editedIndex.value = id
     }
 
     const formEditSubmit = async () => {
@@ -384,7 +405,9 @@
                                     <v-icon
                                         small
                                         class="mr-2 text-info cursor-pointer"
-                                        title="Edit">mdi-pencil
+                                        title="Edit"
+                                        @click="dialog=true;editedIndex=1;formGetProcutById(product.id)"
+                                        >mdi-pencil
                                     </v-icon>
                                     <v-icon
                                         small
