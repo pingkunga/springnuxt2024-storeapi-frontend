@@ -10,6 +10,11 @@ export default [
       to: "/backend/product",
     },
     {
+      title: "Categories",
+      icon: "mdi-format-list-bulleted",
+      to: "/backend/category",
+    },
+    {
       title: "Orders",
       icon: "mdi-cart-outline",
       to: "/backend/order",

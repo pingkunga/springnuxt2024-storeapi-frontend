@@ -1,4 +1,4 @@
-import type { CategoryList } from '~/types/category'
+import type { Category, CategoryList } from '~/types/category'
 import type { ProductList, Product} from '~/types/product'
 
 export default() => {
@@ -139,6 +139,50 @@ export default() => {
             }
         )
     }
+
+    const getCategoryById = async(id: number) => {
+        return callWithTokenCheck<Category>(
+            `${api}/categories/${id}`,
+            {
+                method: 'GET',
+                headers: headers,
+                cache: 'no-cache'
+            }
+        )
+    }
+
+    const addCategory = async(category: Category) => {
+        return callWithTokenCheck<Category>(
+            `${api}/categories`,
+            {
+                method: 'POST',
+                headers: headers,
+                body: category
+            }
+        )
+    }
+
+    const updateCatagory = async(id: number, category: Category) => {
+        return callWithTokenCheck<Category>(
+            `${api}/categories/${id}`,
+            {
+                method: 'PUT',
+                headers: headers,
+                body: category
+            }
+        )
+    }
+
+    const deleteCategory = async(id: number) => {
+        return callWithTokenCheck<Category>(
+            `${api}/categories/${id}`,
+            {
+                method: 'DELETE',
+                headers: headers,
+                cache: 'no-cache'
+            }
+        )
+    }
     
     return {
         getAllProducts,
@@ -147,6 +191,10 @@ export default() => {
         updateProduct,
         deleteProduct,
 
-        getAllCategories
+        getAllCategories,
+        getCategoryById,
+        addCategory,
+        updateCatagory,
+        deleteCategory
     }
 }
