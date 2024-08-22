@@ -20,6 +20,8 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/robots": "^4.0.2",
     "apexcharts": "^3.51.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "sass": "^1.77.8",
     "sweetalert2": "^11.12.3",
     "vite-plugin-vuetify": "^2.0.3",
