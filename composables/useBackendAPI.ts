@@ -39,7 +39,7 @@ export default() => {
         return response
     }
 
-    const getAllProducts = async(page: number, limit: number, searchQuery: string) => {
+    const getAllProducts = async(page: number, limit: number, searchQuery: string = '', selectedCategory: number | null = null) => {
         // return fetchWithTokenCheck<ProductList>(
         //     `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
         //     {
@@ -48,8 +48,18 @@ export default() => {
         //         cache: 'no-cache'
         //     }
         // )
+
+        let url = `${api}/products?page=${page}&limit=${limit}`
+        if (searchQuery) {
+            url += `&searchQuery=${encodeURIComponent(searchQuery)}`
+        }
+
+        if (selectedCategory !== null) {
+            url += `&selectedCategory=${selectedCategory}`
+        }
+
         const res = await callWithTokenCheck<ProductList>(
-            `${api}/products?page=${page}&limit=${limit}&searchQuery=${searchQuery}`,
+            url,
             {
                 method: 'GET',
                 headers: headers,

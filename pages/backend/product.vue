@@ -14,17 +14,33 @@
     //Pagination
     //Search
     const searchQuery = ref('')
+    const selectedCategory = ref('')
     //==========================================================
 
     const products: Ref<Product[]> = ref([])
     const fetchProducts = async () => {
-        const { data } = await useBackendAPI().getAllProducts(page.value,rowsPerPage.value, searchQuery.value)
+        console.log(searchQuery.value)
+        console.log(selectedCategory.value)
+        const { data } = await useBackendAPI().getAllProducts(page.value
+                                                            , rowsPerPage.value
+                                                            , searchQuery.value
+                                                            , selectedCategory.value ? parseInt(selectedCategory.value):null)
         //console.log(data.value.products)
         //console.log(totalItems)
         products.value = data.value?.products ?? []
         totalItems.value = data.value?.totalItems ?? 0
         console.log(data.value?.products)
         //console.log(totalItems)
+
+        // if ((searchQuery) || (selectedCategory.value))
+        // {
+        //     page.value = 1
+        // }
+    }
+
+    const searchProducts = async () => {
+        page.value = 1
+        fetchProducts()
     }
 
     //==========================================================
@@ -414,15 +430,30 @@
                         <v-col cols="12" lg="3" md="3">
                             <h2>Product ({{totalItems}})</h2>
                         </v-col>
-                        <v-col cols="12" lg="6" md="6">
+                        <v-col cols="12" lg="3" md="3">
+                            <v-select 
+                                v-model="selectedCategory"
+                                :items="categoryList"
+                                item-title="categoryName"
+                                item-value="id"
+                                label="Category"
+                                hide-details="auto"
+                                variant="outlined"
+                                clearable
+                                @update:modelValue="searchProducts"
+                           ></v-select>
+                        </v-col>
+                        <v-col cols="12" lg="3" md="3">
                             <v-text-field
                                 v-model="searchQuery"
-                                density="compact"
+                                density="default"
                                 label="Search"
                                 append-icon="mdi-magnify"
                                 hide-details
                                 variant="outlined"
-                                @keyup.enter="fetchProducts"
+                                clearable
+                                @keyup.enter="searchProducts"
+                                @click:clear="fetchProducts"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" lg="3" md="3" class="text-right">
