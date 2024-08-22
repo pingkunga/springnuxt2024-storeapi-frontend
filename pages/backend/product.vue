@@ -463,6 +463,20 @@
                                 @click="dialog=true;editedIndex=-1;resetForm();"
                             >
                             Add Product</v-btn>
+                            <v-btn
+                                color="export"
+                                class="ml-2"
+                                variant="elevated"
+                            >
+                                Export PDF
+                            </v-btn>
+                            <v-btn
+                                color="success"
+                                class="ml-2"
+                                variant="elevated"
+                            >
+                                Export CSV
+                            </v-btn>
                         </v-col>
                     </v-row>
 
