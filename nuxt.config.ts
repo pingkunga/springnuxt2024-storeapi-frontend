@@ -69,8 +69,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      url: process.env.API_URL || "http://localhost:8080/api/v1",
-      urlimage: process.env.API_IMAGE || "http://localhost:8080/uploads",
+      apiBase: "http://localhost:8080/api/v1",    //can be override by NUXT_PUBLIC_API_BASE 
+      apiImage: "http://localhost:8080/uploads",  //can be override by NUXT_PUBLIC_API_IMAGE 
     }
     
   },

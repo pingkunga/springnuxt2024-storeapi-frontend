@@ -6,8 +6,8 @@ export default() => {
     const router = useRouter()
 
     const config = useRuntimeConfig()
-    const api = config.public.url
-    const imagePath = config.public.urlimage
+    const api = config.public.apiBase
+    const imagePath = config.public.apiImage
 
     const token = useCookie('token')
 

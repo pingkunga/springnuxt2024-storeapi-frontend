@@ -31,8 +31,8 @@
 
             // Call the login API
             const config =  useRuntimeConfig()
-            const api = config.public.url
-            const image = config.public.urlimage
+            const api = config.public.apiBase
+            const image = config.public.apiImage
             
             console.log(api)
             console.log(image)

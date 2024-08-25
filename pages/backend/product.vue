@@ -7,7 +7,7 @@
     import 'jspdf-autotable'
 
     const config = useRuntimeConfig()
-    const IMAGE_PATH = config.public.urlimage
+    const IMAGE_PATH = config.public.apiImage
 
     // --------------------  Export to PDF -------------------------------------
     const exportPDF = (products: any[]) => {
