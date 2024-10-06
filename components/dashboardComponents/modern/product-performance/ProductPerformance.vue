@@ -5,7 +5,7 @@ const items = ref(["March", "April", "May", "June"])
 
 const monthtable = ref([
   {
-    img: "/1.jpg",
+    img: "1.jpg",
     activestate: "",
     leadname: "Sunil Joshi",
     leademail: "Web Designer",
@@ -15,7 +15,7 @@ const monthtable = ref([
     money: "$3.9K",
   },
   {
-    img: "/2.jpg",
+    img: "2.jpg",
     activestate: "",
     leadname: "Andrew",
     leademail: "Project Manager",
@@ -25,7 +25,7 @@ const monthtable = ref([
     money: "$23.9K",
   },
   {
-    img: "/3.jpg",
+    img: "3.jpg",
     activestate: "",
     leadname: "Bhavesh patel",
     leademail: "Developer",
@@ -35,7 +35,7 @@ const monthtable = ref([
     money: "$12.9K",
   },
   {
-    img: "/4.jpg",
+    img: "4.jpg",
     activestate: "",
     leadname: "Nirav Joshi",
     leademail: "Frontend Eng",
@@ -45,7 +45,7 @@ const monthtable = ref([
     money: "$10.9K",
   },
   {
-    img: "/5.jpg",
+    img: "5.jpg",
     activestate: "",
     leadname: "Micheal Doe",
     leademail: "Content Writer",
