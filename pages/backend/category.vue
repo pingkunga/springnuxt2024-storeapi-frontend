@@ -142,7 +142,7 @@
 
 <template>
     <div>
-        <h1>Categry Page</h1>
+        <h1>Category Page</h1>
     </div>
 
     <!-- ====================================== -->
